@@ -6,20 +6,59 @@ import { usePathname } from "next/navigation"
 import { Menu, X, ChevronDown } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
-const courseItems = [
-  { href: "/kurs/yks-kursu", label: "YKS Kursu (TYT-AYT)" },
-  { href: "/kurs/lise-hazirlik", label: "9-10-11. Sınıf Kursları" },
-  { href: "/kurs/lgs-hazirlik", label: "LGS Hazırlık Kursu" },
-  { href: "/kurs/ortaokul", label: "5-6-7. Sınıf Kursları" },
-  { href: "/kurs/ozel-ders", label: "Özel Ders" },
-]
+interface NavItem {
+  title: string
+  href: string
+  items?: NavItem[]
+}
 
-const navItems = [
-  { href: "/", label: "Ana Sayfa" },
-  { href: "/kurumsal", label: "Kurumsal" },
-  { type: "dropdown", label: "Kurs", items: courseItems },
-  { href: "/bize-ulasin", label: "Bize Ulaşın" },
-  { href: "/blog", label: "Blog" },
+const navItems: NavItem[] = [
+  {
+    title: "Ana Sayfa",
+    href: "/",
+  },
+  {
+    title: "Kurslar",
+    href: "#",
+    items: [
+      {
+        title: "Özel Ders",
+        href: "/kurs/ozel-ders",
+      },
+      {
+        title: "Grup Dersi",
+        href: "/kurs/grup-dersi",
+      },
+      {
+        title: "YKS Kursu (TYT-AYT)",
+        href: "/kurs/yks-kursu",
+      },
+      {
+        title: "9-10-11. Sınıf Kursları",
+        href: "/kurs/lise-hazirlik",
+      },
+      {
+        title: "LGS Hazırlık Kursu",
+        href: "/kurs/lgs-hazirlik",
+      },
+      {
+        title: "5-6-7. Sınıf Kursları",
+        href: "/kurs/ortaokul",
+      },
+    ],
+  },
+  {
+    title: "Kurumsal",
+    href: "/kurumsal",
+  },
+  {
+    title: "Bize Ulaşın",
+    href: "/bize-ulasin",
+  },
+  {
+    title: "Blog",
+    href: "/blog",
+  },
 ]
 
 export function MainNav() {
@@ -50,9 +89,9 @@ export function MainNav() {
       {/* Desktop Navigation */}
       <div className="hidden lg:flex items-center space-x-2">
         {navItems.map((item) => {
-          if (item.type === "dropdown") {
+          if (item.items) {
             return (
-              <div key={item.label} className="relative group">
+              <div key={item.title} className="relative group">
                 <button
                   className={`flex items-center px-4 py-2 rounded-md text-base font-medium transition-colors ${
                     pathname.startsWith("/kurs")
@@ -60,7 +99,7 @@ export function MainNav() {
                       : "text-gray-700 hover:text-yellow-600 hover:bg-yellow-50"
                   }`}
                 >
-                  {item.label}
+                  {item.title}
                   <ChevronDown className="ml-1 h-4 w-4" />
                 </button>
                 <div className="absolute top-full left-0 w-56 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
@@ -75,7 +114,7 @@ export function MainNav() {
                             : "text-gray-600 hover:bg-yellow-50 hover:text-yellow-600"
                         }`}
                       >
-                        {subItem.label}
+                        {subItem.title}
                       </Link>
                     ))}
                   </div>
@@ -94,7 +133,7 @@ export function MainNav() {
                   : "text-gray-700 hover:text-yellow-600 hover:bg-yellow-50"
               }`}
             >
-              {item.label}
+              {item.title}
             </Link>
           )
         })}
@@ -133,14 +172,14 @@ export function MainNav() {
             <div className="flex-1 overflow-y-auto py-2">
               <div className="flex flex-col">
                 {navItems.map((item) => {
-                  if (item.type === "dropdown") {
+                  if (item.items) {
                     return (
-                      <div key={item.label}>
+                      <div key={item.title}>
                         <button
                           onClick={() => setIsCoursesOpen(!isCoursesOpen)}
                           className="flex items-center justify-between w-full px-6 py-3 text-base text-gray-600 hover:text-yellow-600"
                         >
-                          <span className="font-medium">{item.label}</span>
+                          <span className="font-medium">{item.title}</span>
                           <ChevronDown
                             className={`h-5 w-5 transition-transform ${isCoursesOpen ? "rotate-180" : ""}`}
                           />
@@ -165,7 +204,7 @@ export function MainNav() {
                                   }`}
                                   onClick={() => setIsOpen(false)}
                                 >
-                                  {subItem.label}
+                                  {subItem.title}
                                 </Link>
                               ))}
                             </motion.div>
@@ -184,7 +223,7 @@ export function MainNav() {
                       }`}
                       onClick={() => setIsOpen(false)}
                     >
-                      {item.label}
+                      {item.title}
                     </Link>
                   )
                 })}
@@ -196,4 +235,3 @@ export function MainNav() {
     </nav>
   )
 }
-

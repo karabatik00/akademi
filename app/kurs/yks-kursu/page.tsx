@@ -2,7 +2,6 @@
 
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { motion } from "framer-motion"
 import { GraduationCap, Clock, Users, BookOpen } from "lucide-react"
 
 export default function YKSKursuPage() {
@@ -240,4 +239,3 @@ export default function YKSKursuPage() {
     </div>
   )
 }
-

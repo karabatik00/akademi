@@ -46,7 +46,6 @@ const images = [
 
 export function GallerySection() {
   const [selectedImage, setSelectedImage] = useState<number | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
 
   const handlePrevious = () => {
     setSelectedImage((current) => (current === 0 ? images.length - 1 : current! - 1))
@@ -54,14 +53,6 @@ export function GallerySection() {
 
   const handleNext = () => {
     setSelectedImage((current) => (current === images.length - 1 ? 0 : current! + 1))
-  }
-
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (selectedImage === null) return
-
-    if (e.key === "ArrowLeft") handlePrevious()
-    if (e.key === "ArrowRight") handleNext()
-    if (e.key === "Escape") setSelectedImage(null)
   }
 
   return (
@@ -109,14 +100,7 @@ export function GallerySection() {
                 className="object-cover transition-transform duration-300 group-hover:scale-105"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 quality={90}
-                onLoad={(event) => {
-                  const target = event.target as HTMLImageElement;
-                  if (target.src.indexOf('data:image/gif;base64') < 0) {
-                    setIsLoading(false);
-                    target.style.opacity = '1';
-                  }
-                }}
-                style={{ opacity: 0, transition: 'opacity 0.5s' }}
+                style={{ opacity: 1 }}
                 placeholder="blur"
                 blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRoaHSQrJiEkKic0Ly4vLy4vNDQ6OjQ0OjpBQUFBQUFBQUFBQUFBQUFBQUFBQUH/2wBDAR0XFyAeIBogHiAeIiIgKjQqKioqKjQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDT/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
               />

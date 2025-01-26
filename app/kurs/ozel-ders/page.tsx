@@ -2,7 +2,6 @@
 
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { motion } from "framer-motion"
 
 export default function OzelDersPage() {
   return (
@@ -91,6 +90,12 @@ export default function OzelDersPage() {
                   Matematik Özel Ders Ankara
                 </li>
               </ul>
+              <p className="text-gray-700 leading-relaxed">
+                Öğrencilerimizin kişisel gelişimlerini takip ederek, onların başarılarını artırmak için "Özel Ders" programımızı sunuyoruz. Öğrencilerimizin akademik başarılarını artırmak için "Birebir Özel Ders" imkanı sağlıyoruz.
+              </p>
+              <p className="text-gray-700 leading-relaxed mt-4">
+                Öğrencilerimizin "Başarı Yolculuğunda" yanlarında olmaktan gurur duyuyoruz. "Özel Ders" programımız ile öğrencilerimizin akademik başarılarını artırmak için "Birebir Özel Ders" imkanı sağlıyoruz.
+              </p>
             </div>
           </div>
         </section>
@@ -184,4 +189,3 @@ export default function OzelDersPage() {
     </div>
   )
 }
-

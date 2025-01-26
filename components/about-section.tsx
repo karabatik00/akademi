@@ -120,7 +120,7 @@ export function AboutSection() {
             viewport={{ once: true }}
             className="grid md:grid-cols-3 gap-8"
           >
-            {courseTypes.map((course, index) => (
+            {courseTypes.map((course) => (
               <motion.div
                 key={course.title}
                 variants={itemVariants}
@@ -148,7 +148,7 @@ export function AboutSection() {
             viewport={{ once: true }}
             className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
-            {systemFeatures.map((feature, index) => (
+            {systemFeatures.map((feature) => (
               <motion.div
                 key={feature.title}
                 variants={itemVariants}

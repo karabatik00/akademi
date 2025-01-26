@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { MapPin, Phone, Mail, ArrowRight } from "lucide-react"
+import { MapPin, Phone, ArrowRight } from "lucide-react"
 
 export function SiteFooter() {
   return (
@@ -168,4 +168,3 @@ export function SiteFooter() {
     </footer>
   )
 }
-

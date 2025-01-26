@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react"
 import Image from "next/image"
-import { motion } from "framer-motion"
 import { ErrorBoundary } from "react-error-boundary"
 
 function ErrorFallback({ error }: { error: Error }) {
@@ -48,14 +47,11 @@ export default function KurumsalPage() {
           <section className="py-16 md:py-24">
             <div className="container mx-auto px-4">
               <div className="text-center max-w-3xl mx-auto mb-16">
-                <motion.h1
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8 }}
+                <h1
                   className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-yellow-600 to-yellow-700 bg-clip-text text-transparent mb-6"
                 >
                   Hakkımızda | Ankara YKS Kursu
-                </motion.h1>
+                </h1>
               </div>
             </div>
           </section>
@@ -66,11 +62,7 @@ export default function KurumsalPage() {
             <section>
               <div className="container mx-auto px-4">
                 <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
-                  <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8 }}
+                  <div
                     className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl"
                   >
                     <Image
@@ -79,25 +71,21 @@ export default function KurumsalPage() {
                       fill
                       className="object-cover"
                     />
-                  </motion.div>
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8 }}
+                  </div>
+                  <div
                     className="space-y-6"
                   >
                     <h2 className="text-3xl md:text-4xl font-bold text-gray-900">Kurumsal</h2>
                     <p className="text-lg text-gray-600 leading-relaxed">
-                      Alfa Vip Eğitim olarak, eğitimde mükemmelliği hedefleyen özel ders ve sınav hazırlık
-                      programlarımızla öğrencilerimizin başarı yolculuğuna rehberlik ediyoruz.
+                      Alfa Vip Eğitim olarak, öğrencilerimizin &quot;Başarı Yolculuğunda&quot; yanlarında olmaktan gurur duyuyoruz.
                     </p>
                     <p className="text-lg text-gray-600 leading-relaxed">
-                      Vizyonumuz, Atatürk İlke ve İnkılaplarına bağlı, çağın gereklerine uyum sağlayabilen, analitik
-                      düşünme becerisine sahip, özgüvenli ve yenilikçi bireyler yetiştirmektir. Her öğrencimizin
-                      potansiyelini en üst düzeye çıkararak, onları gelecekteki başarılarına hazırlıyoruz.
+                      Vizyonumuz, Atatürk İlke ve İnkılaplarına bağlı, çağın gereklerine uyum sağlayabilen, analitik düşünebilen, sorgulayan ve araştıran bireyler yetiştirmektir.
                     </p>
-                  </motion.div>
+                    <p className="text-lg text-gray-600 leading-relaxed">
+                      Misyonumuz, öğrencilerimizin akademik başarılarını artırmak için &quot;Birebir Özel Ders&quot; imkanı sağlamaktır.
+                    </p>
+                  </div>
                 </div>
               </div>
             </section>
@@ -106,11 +94,7 @@ export default function KurumsalPage() {
             <section>
               <div className="container mx-auto px-4">
                 <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
-                  <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8 }}
+                  <div
                     className="space-y-6 lg:order-2"
                   >
                     <h2 className="text-3xl md:text-4xl font-bold text-gray-900">Sistemimiz</h2>
@@ -124,12 +108,8 @@ export default function KurumsalPage() {
                       izliyor ve destekliyoruz. Modern eğitim teknolojilerini kullanarak, klasik eğitim yöntemlerini
                       yenilikçi yaklaşımlarla birleştiriyoruz.
                     </p>
-                  </motion.div>
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8 }}
+                  </div>
+                  <div
                     className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl lg:order-1"
                   >
                     <Image
@@ -138,7 +118,7 @@ export default function KurumsalPage() {
                       fill
                       className="object-cover"
                     />
-                  </motion.div>
+                  </div>
                 </div>
               </div>
             </section>
@@ -147,11 +127,7 @@ export default function KurumsalPage() {
             <section>
               <div className="container mx-auto px-4">
                 <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
-                  <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8 }}
+                  <div
                     className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl"
                   >
                     <Image
@@ -160,12 +136,8 @@ export default function KurumsalPage() {
                       fill
                       className="object-cover"
                     />
-                  </motion.div>
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8 }}
+                  </div>
+                  <div
                     className="space-y-6"
                   >
                     <h2 className="text-3xl md:text-4xl font-bold text-gray-900">Kadromuz</h2>
@@ -180,7 +152,7 @@ export default function KurumsalPage() {
                       başarılı öğrencimiz ve velilerimizden aldığımız olumlu geri bildirimler, kadromuzun kalitesinin en
                       büyük göstergesidir.
                     </p>
-                  </motion.div>
+                  </div>
                 </div>
               </div>
             </section>
@@ -189,11 +161,7 @@ export default function KurumsalPage() {
             <section>
               <div className="container mx-auto px-4">
                 <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
-                  <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8 }}
+                  <div
                     className="space-y-6 lg:order-2"
                   >
                     <h2 className="text-3xl md:text-4xl font-bold text-gray-900">Kişiye özel programlar sunuyoruz</h2>
@@ -208,12 +176,8 @@ export default function KurumsalPage() {
                       yaparak maksimum verimi hedefliyoruz. Bu yaklaşım, her öğrencimizin kendi hızında ilerlemesine ve
                       potansiyelini tam anlamıyla ortaya çıkarmasına olanak sağlıyor.
                     </p>
-                  </motion.div>
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8 }}
+                  </div>
+                  <div
                     className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl lg:order-1"
                   >
                     <Image
@@ -222,7 +186,7 @@ export default function KurumsalPage() {
                       fill
                       className="object-cover"
                     />
-                  </motion.div>
+                  </div>
                 </div>
               </div>
             </section>
@@ -231,11 +195,7 @@ export default function KurumsalPage() {
             <section>
               <div className="container mx-auto px-4">
                 <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
-                  <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8 }}
+                  <div
                     className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl"
                   >
                     <Image
@@ -244,12 +204,8 @@ export default function KurumsalPage() {
                       fill
                       className="object-cover"
                     />
-                  </motion.div>
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8 }}
+                  </div>
+                  <div
                     className="space-y-6"
                   >
                     <h2 className="text-3xl md:text-4xl font-bold text-gray-900">İşimizi severek yapıyoruz</h2>
@@ -263,7 +219,7 @@ export default function KurumsalPage() {
                       ve öğrenme sürecini keyifli bir yolculuğa dönüştürüyor. Çünkü biliyoruz ki, seven öğrenir, öğrenen
                       başarır ve başaran mutlu olur.
                     </p>
-                  </motion.div>
+                  </div>
                 </div>
               </div>
             </section>
@@ -273,4 +229,3 @@ export default function KurumsalPage() {
     </ErrorBoundary>
   )
 }
-

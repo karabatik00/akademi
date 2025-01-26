@@ -25,6 +25,8 @@ export function VideoSection() {
     const header = document.querySelector("header") as HTMLElement
     if (!header) return
 
+    const currentRef = sectionRef.current
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         header.style.transform = entry.isIntersecting ? "translateY(-100%)" : "translateY(0)"
@@ -33,13 +35,13 @@ export function VideoSection() {
       { threshold: 0.1 },
     )
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
+    if (currentRef) {
+      observer.observe(currentRef)
     }
 
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current)
+      if (currentRef) {
+        observer.unobserve(currentRef)
       }
     }
   }, [])
@@ -182,4 +184,3 @@ export function VideoSection() {
     </section>
   )
 }
-

@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion"
 import { MapPin, Phone, Clock, Mail, MessageCircle, Send, ArrowRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import Image from "next/image"
 
 const workingHours = [
@@ -219,4 +218,3 @@ export default function ContactPage() {
     </div>
   )
 }
-

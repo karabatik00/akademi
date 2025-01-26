@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { Star, MapPin, Phone, Mail, ExternalLink, ChevronRight } from "lucide-react"
+import { Star } from "lucide-react"
+import Image from "next/image"
 
 interface Review {
   id: string
@@ -35,7 +36,7 @@ export function ReviewsSection() {
         }
         const data = await response.json()
         setReviews(data)
-      } catch (err) {
+      } catch {
         setError("Failed to load reviews. Please try again later.")
       } finally {
         setIsLoading(false)
@@ -93,17 +94,17 @@ export function ReviewsSection() {
 
                 <div className="space-y-4">
                   <div className="flex items-start gap-4">
-                    <MapPin className="w-6 h-6 text-gray-400 flex-shrink-0 mt-1" />
+                    <div className="w-6 h-6 text-gray-400 flex-shrink-0 mt-1" />
                     <p className="text-gray-600">{contactInfo.address}</p>
                   </div>
                   <div className="flex items-center gap-4">
-                    <Phone className="w-6 h-6 text-gray-400" />
+                    <div className="w-6 h-6 text-gray-400" />
                     <a href={`tel:${contactInfo.phone}`} className="text-gray-600 hover:text-yellow-600">
                       {contactInfo.phone}
                     </a>
                   </div>
                   <div className="flex items-center gap-4">
-                    <Mail className="w-6 h-6 text-gray-400" />
+                    <div className="w-6 h-6 text-gray-400" />
                     <a href={`mailto:${contactInfo.email}`} className="text-gray-600 hover:text-yellow-600">
                       {contactInfo.email}
                     </a>
@@ -117,7 +118,7 @@ export function ReviewsSection() {
                   className="inline-flex items-center gap-2 text-yellow-600 hover:text-yellow-700 font-medium"
                 >
                   Google Maps'te görüntüle
-                  <ExternalLink className="w-4 h-4" />
+                  <div className="w-4 h-4" />
                 </a>
               </div>
             </motion.div>
@@ -150,12 +151,15 @@ export function ReviewsSection() {
                       className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow"
                     >
                       <div className="flex items-start gap-4">
-                        <img
+                        <Image
                           src={review.avatar || "/placeholder.svg"}
                           alt={review.author}
-                          className="w-12 h-12 rounded-full object-cover bg-gray-100"
+                          width={48}
+                          height={48}
+                          className="rounded-full object-cover bg-gray-100"
                           onError={(e) => {
-                            e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(review.author)}&background=FEF9C3&color=854D0E`
+                            const target = e.target as HTMLImageElement
+                            target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(review.author)}&background=FEF9C3&color=854D0E`
                           }}
                         />
                         <div className="flex-1 min-w-0">
@@ -164,16 +168,12 @@ export function ReviewsSection() {
                               <Star key={i} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
                             ))}
                           </div>
-                          <p className="text-gray-600 mb-2">{review.text}</p>
+                          <p className="text-gray-600 mb-2">{review.text.replace(/"/g, "&quot;")}</p>
                           <div className="flex items-center justify-between">
                             <div>
                               <p className="font-medium text-gray-900">{review.author}</p>
                               <p className="text-sm text-gray-500">{review.date}</p>
                             </div>
-                            <button className="inline-flex items-center gap-1 text-yellow-600 hover:text-yellow-700 text-sm font-medium">
-                              Tam yorumu oku
-                              <ChevronRight className="w-4 h-4" />
-                            </button>
                           </div>
                         </div>
                       </div>
@@ -189,7 +189,7 @@ export function ReviewsSection() {
                 className="inline-flex items-center gap-2 text-yellow-600 hover:text-yellow-700 font-medium"
               >
                 Tüm değerlendirmeleri görüntüle
-                <ExternalLink className="w-4 h-4" />
+                <div className="w-4 h-4" />
               </a>
             </motion.div>
           </div>

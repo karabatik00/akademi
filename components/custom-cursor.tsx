@@ -1,74 +1,49 @@
 "use client"
 
 import { useEffect, useState, useCallback, useRef } from "react"
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
+import { motion, useMotionValue, useSpring } from "framer-motion"
 
 const INTERACTIVE_ELEMENTS = [
   'a',
   'button',
   'input',
   'select',
+  'textarea',
   '[role="button"]',
   '[role="link"]',
-  '[tabindex="0"]',
-  'label',
-  '.clickable'
-].join(',')
-
-const CURSOR_DISABLED_ELEMENTS = [
-  'iframe',
-  '[data-custom-cursor-disabled]',
-  '.map-container',
-  '.google-map',
-  'canvas',
-  'video',
-  '.no-cursor'
+  '[role="menuitem"]',
+  '[role="option"]',
+  '[role="switch"]',
+  '[role="tab"]',
+  '[tabindex]',
+  '[data-interactive]',
 ].join(',')
 
 export function CustomCursor() {
-  // Cursor pozisyonu için refs
-  const cursorRef = useRef<HTMLDivElement>(null)
-  const ringRef = useRef<HTMLDivElement>(null)
-  
-  // Mouse pozisyonu için motion values
+  // Mouse position tracking
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
-  
-  // Cursor pozisyonu için smooth spring
-  const springConfig = { 
-    damping: 35,
-    stiffness: 350,
-    mass: 0.8,
-    restSpeed: 0.001,
-    restDelta: 0.001
-  }
 
-  const cursorX = useSpring(mouseX, springConfig)
-  const cursorY = useSpring(mouseY, springConfig)
+  // Smooth spring animation for cursor
+  const smoothX = useSpring(mouseX, { damping: 50, stiffness: 400 })
+  const smoothY = useSpring(mouseY, { damping: 50, stiffness: 400 })
 
   // State management
   const [isVisible, setIsVisible] = useState(false)
   const [isPointer, setIsPointer] = useState(false)
   const [isClicking, setIsClicking] = useState(false)
-  const [isTouchDevice, setIsTouchDevice] = useState(false)
   const [isDisabled, setIsDisabled] = useState(false)
-  
-  // Mouse position tracking için ref
-  const mousePosition = useRef({ x: 0, y: 0 })
   const isOutOfBounds = useRef(false)
-  const frameId = useRef<number>()
 
-  // Touch device detection - daha güvenilir
+  // Touch device detection
+  const [isTouchDevice, setIsTouchDevice] = useState(false)
+
   useEffect(() => {
     const checkTouch = () => {
-      const isTouchCapable = 
+      setIsTouchDevice(
         'ontouchstart' in window ||
-        navigator.maxTouchPoints > 0 ||
-        (navigator as any).msMaxTouchPoints > 0 ||
-        window.matchMedia('(hover: none)').matches ||
-        window.matchMedia('(pointer: coarse)').matches
-      
-      setIsTouchDevice(isTouchCapable)
+        navigator.maxTouchPoints > 0
+      )
     }
 
     checkTouch()
@@ -76,203 +51,166 @@ export function CustomCursor() {
     return () => window.removeEventListener('resize', checkTouch)
   }, [])
 
-  // Mouse takibi için ana fonksiyon
-  const updateMousePosition = useCallback((e: MouseEvent) => {
-    mousePosition.current = { x: e.clientX, y: e.clientY }
-    
-    if (frameId.current) {
-      cancelAnimationFrame(frameId.current)
+  // Element interaction checks
+  const isInteractive = useCallback((element: HTMLElement | null): boolean => {
+    if (!element) return false
+
+    return (
+      element.matches(INTERACTIVE_ELEMENTS) ||
+      element.closest(INTERACTIVE_ELEMENTS) !== null
+    )
+  }, [])
+
+  // Mouse event handlers
+  const handleMouseMove = useCallback((event: MouseEvent) => {
+    const { clientX, clientY } = event
+    mouseX.set(clientX)
+    mouseY.set(clientY)
+
+    if (isOutOfBounds.current) {
+      isOutOfBounds.current = false
+      setIsVisible(true)
     }
-
-    frameId.current = requestAnimationFrame(() => {
-      // Viewport sınırlarını kontrol et
-      const isOutside = 
-        e.clientX < 0 ||
-        e.clientX > window.innerWidth ||
-        e.clientY < 0 ||
-        e.clientY > window.innerHeight
-
-      if (isOutside !== isOutOfBounds.current) {
-        isOutOfBounds.current = isOutside
-        setIsVisible(!isOutside)
-      }
-
-      mouseX.set(e.clientX)
-      mouseY.set(e.clientY)
-    })
   }, [mouseX, mouseY])
 
-  // Element kontrolü için fonksiyon
-  const checkElement = useCallback((e: MouseEvent) => {
-    const target = e.target as HTMLElement
-    
-    // Cursor'ın devre dışı kalması gereken durumlar
-    const shouldDisable = 
-      target.matches(CURSOR_DISABLED_ELEMENTS) ||
-      target.closest(CURSOR_DISABLED_ELEMENTS) !== null ||
-      !document.hasFocus() ||
-      isOutOfBounds.current
-
+  const handleMouseEnter = useCallback((event: MouseEvent) => {
+    const target = event.target as HTMLElement
+    const shouldDisable = target.hasAttribute('data-disable-cursor')
     setIsDisabled(shouldDisable)
     
     if (!shouldDisable) {
-      const isClickable = 
-        target.matches(INTERACTIVE_ELEMENTS) ||
-        target.closest(INTERACTIVE_ELEMENTS) !== null
+      const isClickable = isInteractive(target)
       setIsPointer(isClickable)
     }
-  }, [])
-
-  // Mouse events
-  const handleMouseDown = useCallback(() => {
-    if (!isDisabled) setIsClicking(true)
-  }, [isDisabled])
-
-  const handleMouseUp = useCallback(() => {
-    setIsClicking(false)
-  }, [])
-
-  const handleMouseEnter = useCallback(() => {
-    isOutOfBounds.current = false
-    setIsVisible(true)
-  }, [])
+  }, [isInteractive])
 
   const handleMouseLeave = useCallback(() => {
     isOutOfBounds.current = true
     setIsVisible(false)
   }, [])
 
-  // Window events
+  const handleMouseDown = useCallback(() => {
+    setIsClicking(true)
+  }, [])
+
+  const handleMouseUp = useCallback(() => {
+    setIsClicking(false)
+  }, [])
+
+  // Window event handlers
   const handleVisibilityChange = useCallback(() => {
     if (document.hidden) {
       setIsVisible(false)
-    } else {
-      setIsVisible(!isOutOfBounds.current)
     }
   }, [])
 
-  const handleFocus = useCallback(() => {
-    if (!isOutOfBounds.current) {
-      setIsVisible(true)
-    }
-  }, [])
-
-  const handleBlur = useCallback(() => {
+  const handleWindowBlur = useCallback(() => {
     setIsVisible(false)
   }, [])
 
-  // Event listeners
+  const handleWindowFocus = useCallback(() => {
+    setIsVisible(true)
+  }, [])
+
+  // Setup and cleanup event listeners
   useEffect(() => {
-    if (isTouchDevice) return
-
-    let frameId: number
-
-    const updateCursor = () => {
-      if (!isOutOfBounds.current && document.hasFocus()) {
-        mouseX.set(mousePosition.current.x)
-        mouseY.set(mousePosition.current.y)
-      }
-      frameId = requestAnimationFrame(updateCursor)
+    if (isTouchDevice) {
+      return
     }
-    
-    frameId = requestAnimationFrame(updateCursor)
 
+    // Add custom cursor class
     document.documentElement.classList.add('custom-cursor')
     
     // Mouse events
-    document.addEventListener('mousemove', updateMousePosition, { passive: true })
-    document.addEventListener('mouseover', checkElement)
+    document.addEventListener('mousemove', handleMouseMove, { passive: true })
+    document.addEventListener('mouseover', handleMouseEnter)
     document.addEventListener('mousedown', handleMouseDown)
     document.addEventListener('mouseup', handleMouseUp)
-    document.addEventListener('mouseenter', handleMouseEnter)
     document.addEventListener('mouseleave', handleMouseLeave)
     
     // Window events
-    window.addEventListener('focus', handleFocus)
-    window.addEventListener('blur', handleBlur)
-    window.addEventListener('resize', handleMouseLeave)
-    window.addEventListener('scroll', handleMouseLeave, { passive: true })
     document.addEventListener('visibilitychange', handleVisibilityChange)
+    window.addEventListener('blur', handleWindowBlur)
+    window.addEventListener('focus', handleWindowFocus)
 
     return () => {
-      cancelAnimationFrame(frameId)
+      // Remove custom cursor class
       document.documentElement.classList.remove('custom-cursor')
       
       // Mouse events
-      document.removeEventListener('mousemove', updateMousePosition)
-      document.removeEventListener('mouseover', checkElement)
+      document.removeEventListener('mousemove', handleMouseMove)
+      document.removeEventListener('mouseover', handleMouseEnter)
       document.removeEventListener('mousedown', handleMouseDown)
       document.removeEventListener('mouseup', handleMouseUp)
-      document.removeEventListener('mouseenter', handleMouseEnter)
       document.removeEventListener('mouseleave', handleMouseLeave)
       
       // Window events
-      window.removeEventListener('focus', handleFocus)
-      window.removeEventListener('blur', handleBlur)
-      window.removeEventListener('resize', handleMouseLeave)
-      window.removeEventListener('scroll', handleMouseLeave)
       document.removeEventListener('visibilitychange', handleVisibilityChange)
+      window.removeEventListener('blur', handleWindowBlur)
+      window.removeEventListener('focus', handleWindowFocus)
     }
   }, [
     isTouchDevice,
-    updateMousePosition,
-    checkElement,
+    handleMouseMove,
+    handleMouseEnter,
     handleMouseDown,
     handleMouseUp,
-    handleMouseEnter,
     handleMouseLeave,
-    handleFocus,
-    handleBlur,
     handleVisibilityChange,
-    mouseX,
-    mouseY
+    handleWindowBlur,
+    handleWindowFocus,
   ])
 
-  if (isTouchDevice || isDisabled) return null
+  if (isTouchDevice || isDisabled) {
+    return null
+  }
 
   return (
     <>
+      {/* Dot */}
       <motion.div
-        ref={cursorRef}
-        className="cursor-dot"
         style={{
+          width: 8,
+          height: 8,
+          backgroundColor: 'black',
           position: 'fixed',
+          borderRadius: '50%',
           top: -4,
           left: -4,
-          x: cursorX,
-          y: cursorY,
+          x: smoothX,
+          y: smoothY,
           pointerEvents: 'none',
+          zIndex: 9999,
         }}
         initial={{ opacity: 0, scale: 0 }}
         animate={{
           opacity: isVisible ? 1 : 0,
-          scale: isClicking ? 0.8 : 1,
+          scale: isVisible ? (isClicking ? 0.5 : 1) : 0,
         }}
-        transition={{
-          opacity: { duration: 0.15 },
-          scale: { type: 'spring', damping: 20, stiffness: 300 },
-        }}
+        transition={{ duration: 0.2 }}
       />
+
+      {/* Circle */}
       <motion.div
-        ref={ringRef}
-        className="cursor-ring"
         style={{
+          width: 32,
+          height: 32,
+          border: '2px solid black',
           position: 'fixed',
+          borderRadius: '50%',
           top: -16,
           left: -16,
-          x: cursorX,
-          y: cursorY,
+          x: smoothX,
+          y: smoothY,
           pointerEvents: 'none',
+          zIndex: 9998,
         }}
         initial={{ opacity: 0, scale: 0 }}
         animate={{
-          opacity: isVisible ? 1 : 0,
-          scale: isPointer ? 1.2 : isClicking ? 0.8 : 1,
+          opacity: isVisible ? 0.15 : 0,
+          scale: isVisible ? (isPointer ? 1.5 : isClicking ? 0.5 : 1) : 0,
         }}
-        transition={{
-          opacity: { duration: 0.15 },
-          scale: { type: 'spring', damping: 25, stiffness: 300 },
-        }}
+        transition={{ duration: 0.2 }}
       />
     </>
   )

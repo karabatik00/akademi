@@ -13,11 +13,12 @@ export function BecomeStudentSection() {
   const [isPending, setIsPending] = useState(false)
   const [errors, setErrors] = useState<Record<string, string[]>>({})
 
-  async function handleSubmit(formData: FormData) {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setIsPending(true)
     setErrors({})
 
     try {
+      const formData = new FormData(e.currentTarget)
       const result = await submitContactForm(formData)
 
       if (result.error) {
@@ -25,10 +26,9 @@ export function BecomeStudentSection() {
         toast.error("Lütfen tüm alanları doğru şekilde doldurunuz.")
       } else {
         toast.success("Başvurunuz başarıyla gönderildi!")
-        const form = document.getElementById("contact-form") as HTMLFormElement
-        form?.reset()
+        e.currentTarget.reset()
       }
-    } catch (error) {
+    } catch {
       toast.error("Bir hata oluştu. Lütfen tekrar deneyiniz.")
     } finally {
       setIsPending(false)
@@ -68,7 +68,7 @@ export function BecomeStudentSection() {
             className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden"
           >
             <div className="p-6 sm:p-8">
-              <form id="contact-form" action={handleSubmit} className="space-y-6">
+              <form id="contact-form" onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
                   <Input
                     type="text"
@@ -172,4 +172,3 @@ export function BecomeStudentSection() {
     </section>
   )
 }
-

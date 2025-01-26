@@ -2,7 +2,6 @@
 
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { motion } from "framer-motion"
 import { GraduationCap, Clock, Users, BookOpen } from "lucide-react"
 
 export default function LGSHazirlikPage() {
@@ -46,7 +45,7 @@ export default function LGSHazirlikPage() {
                 başarıya ulaşması için her türlü imkanı sağlıyoruz.
               </p>
               <p className="text-gray-700 leading-relaxed">
-                Öğrencilerimizin başarıya ulaşması için her türlü imkanı sağlıyoruz. "Yenilikçi başarılı" öğrencilerimiz
+                Öğrencilerimizin başarıya ulaşması için her türlü imkanı sağlıyoruz. &quot;Yenilikçi başarılı&quot; öğrencilerimiz
                 ve öğretmenlerimiz okulu başarılarını artırmaya yönelik olası öğretmenler sürecindirmelerde. Yeni nesil
                 sorular ve öğrencileri artırarak ve programlara başarılarını artık hale getirip düşünür ve başarılara
                 programı sağlarız. Alt konu LGS Özel Ders Matematik Özel Ders.
@@ -244,4 +243,3 @@ export default function LGSHazirlikPage() {
     </div>
   )
 }
-
