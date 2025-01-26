@@ -2,26 +2,266 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 0 0% 100%;
+    --foreground: 20 14.3% 4.1%;
+    --card: 0 0% 100%;
+    --card-foreground: 20 14.3% 4.1%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 14.3% 4.1%;
+    --primary: 47.9 95.8% 53.1%;
+    --primary-foreground: 26 83.3% 14.1%;
+    --secondary: 60 4.8% 95.9%;
+    --secondary-foreground: 24 9.8% 10%;
+    --muted: 60 4.8% 95.9%;
+    --muted-foreground: 25 5.3% 44.7%;
+    --accent: 60 4.8% 95.9%;
+    --accent-foreground: 24 9.8% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 60 9.1% 97.8%;
+    --border: 20 5.9% 90%;
+    --input: 20 5.9% 90%;
+    --ring: 20 14.3% 4.1%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 20 14.3% 4.1%;
+    --foreground: 60 9.1% 97.8%;
+    --card: 20 14.3% 4.1%;
+    --card-foreground: 60 9.1% 97.8%;
+    --popover: 20 14.3% 4.1%;
+    --popover-foreground: 60 9.1% 97.8%;
+    --primary: 47.9 95.8% 53.1%;
+    --primary-foreground: 26 83.3% 14.1%;
+    --secondary: 12 6.5% 15.1%;
+    --secondary-foreground: 60 9.1% 97.8%;
+    --muted: 12 6.5% 15.1%;
+    --muted-foreground: 24 5.4% 63.9%;
+    --accent: 12 6.5% 15.1%;
+    --accent-foreground: 60 9.1% 97.8%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 60 9.1% 97.8%;
+    --border: 12 6.5% 15.1%;
+    --input: 12 6.5% 15.1%;
+    --ring: 35.5 91.7% 32.9%;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
   }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Basic Smooth Scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar - Yellow Theme */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #fef9c3;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #facc15;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #eab308;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #facc15 #fef9c3;
+}
+
+/* Optimize animations */
+* {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Enhanced touch scrolling */
+@media (hover: none) and (pointer: coarse) {
+  body {
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y pinch-zoom;
+  }
+}
+
+/* Custom Scroll Container Class */
+.smooth-scroll {
+  scroll-behavior: smooth;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  will-change: transform;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* Custom Cursor Styles */
+.custom-cursor * {
+  cursor: none !important;
+}
+
+/* Özel elementler için cursor kontrolü */
+.custom-cursor .map-container *,
+.custom-cursor .google-map *,
+.custom-cursor iframe,
+.custom-cursor canvas,
+.custom-cursor video,
+.custom-cursor [data-custom-cursor-disabled],
+.custom-cursor .no-cursor {
+  cursor: auto !important;
+}
+
+/* Cursor elementleri */
+.cursor-dot,
+.cursor-ring {
+  pointer-events: none !important;
+  position: fixed;
+  z-index: 99999;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  
+  /* GPU hızlandırma */
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  perspective: 1000px;
+  -webkit-perspective: 1000;
+}
+
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #facc15;
+  border-radius: 50%;
+  mix-blend-mode: difference;
+  transform-origin: center;
+  
+  /* Smooth transitions */
+  transition: opacity 150ms ease-in-out, transform 150ms ease-out;
+  -webkit-transition: opacity 150ms ease-in-out, transform 150ms ease-out;
+}
+
+.cursor-ring {
+  width: 32px;
+  height: 32px;
+  background-color: transparent;
+  border: 2px solid #facc15;
+  border-radius: 50%;
+  mix-blend-mode: difference;
+  transform-origin: center;
+  
+  /* Smooth transitions */
+  transition: opacity 150ms ease-in-out, transform 150ms ease-out;
+  -webkit-transition: opacity 150ms ease-in-out, transform 150ms ease-out;
+}
+
+/* Touch cihazlar ve küçük ekranlar için devre dışı bırak */
+@media (hover: none), 
+       (pointer: coarse), 
+       (max-width: 768px),
+       (max-height: 600px) {
+  .custom-cursor * {
+    cursor: auto !important;
+  }
+  
+  .cursor-dot,
+  .cursor-ring {
+    display: none !important;
+  }
+}
+
+/* Reduced motion desteği */
+@media (prefers-reduced-motion: reduce) {
+  .cursor-dot,
+  .cursor-ring {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Özel element cursor stilleri */
+.custom-cursor input,
+.custom-cursor textarea {
+  cursor: text !important;
+}
+
+.custom-cursor select,
+.custom-cursor option {
+  cursor: default !important;
+}
+
+/* Seçim sırasında cursor görünürlüğü */
+.custom-cursor *::selection {
+  background-color: #facc15;
+  color: #1a1a1a;
+  cursor: none !important;
+}
+
+/* Safari için özel fix */
+@media not all and (min-resolution:.001dpcm) { 
+  @supports (-webkit-appearance:none) {
+    .cursor-dot,
+    .cursor-ring {
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+    }
+  }
+}
+
+/* Hover effects for interactive elements */
+a:hover ~ .cursor-dot,
+button:hover ~ .cursor-dot,
+[role="button"]:hover ~ .cursor-dot {
+  transform: scale(1.5);
+}
+
+a:hover ~ .cursor-ring,
+button:hover ~ .cursor-ring,
+[role="button"]:hover ~ .cursor-ring {
+  transform: scale(1.2);
+}
+
+/* Text selection cursor */
+::selection {
+  background-color: #facc15;
+  color: #ffffff;
+}
+
+::-moz-selection {
+  background-color: #facc15;
+  color: #ffffff;
 }
